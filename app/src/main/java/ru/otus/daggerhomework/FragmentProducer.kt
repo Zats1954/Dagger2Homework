@@ -1,6 +1,5 @@
 package ru.otus.daggerhomework
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,7 @@ import dagger.Module
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import ru.otus.daggerhomework.DaggerMainActivityComponent.factory
-import javax.inject.Inject
+ import javax.inject.Inject
 
 class FragmentProducer : Fragment() {
 

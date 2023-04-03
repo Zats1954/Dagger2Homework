@@ -10,12 +10,8 @@ import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ViewModelProducer @Inject constructor(
@@ -31,7 +27,7 @@ class ViewModelProducer @Inject constructor(
 
     fun generateColor()  {
 //        if (context !is MainActivity ) throw RuntimeException("Здесь нужен контекст активити")
-       _colorState.value = colorGenerator.generateColor()
+        _colorState.value = colorGenerator.generateColor()
         println("color ${colorState.value}")
         Toast.makeText(context, "Color sent", Toast.LENGTH_LONG).show()
     }
