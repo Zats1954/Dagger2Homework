@@ -8,7 +8,11 @@ import androidx.annotation.RequiresApi
 import dagger.BindsInstance
 import dagger.Component
 import dagger.Module
+import dagger.Provides
+import javax.inject.Named
+import javax.inject.Qualifier
 
+annotation class MainActivityContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,12 +24,17 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@Component
+@Component()
 interface MainActivityComponent {
 
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): MainActivityComponent
     }
+
+//    @ApplicationContext
+    fun provideApplicationContex(): Context
 }
+
+
 
