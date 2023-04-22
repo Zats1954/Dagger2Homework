@@ -1,24 +1,31 @@
 package ru.otus.daggerhomework
 
 import android.content.Context
-import dagger.BindsInstance
-import dagger.Component
-import dagger.Module
+import dagger.*
 import javax.inject.Qualifier
 
 
-@Component
+@Component(
+    modules = [ApplicationModule::class]
+)
 interface ApplicationComponent {
 
 //    @ApplicationContext
-    fun provideContext(): Context
+//    @Provides
+//    fun provideContext(): Context
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context): ApplicationComponent
+        fun create(@BindsInstance @ApplicationContext context: Context): ApplicationComponent
     }
 }
 
-//annotation class ApplicationContext
-//@Module
-//ApplicationModule
+annotation class ApplicationContext
+
+@Module
+interface ApplicationModule{
+    @Binds
+    fun bindContext(context: Context): Context{
+        return context
+    }
+}

@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import dagger.Binds
 import dagger.BindsInstance
 import dagger.Component
@@ -14,18 +16,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 class ViewModelReceiverImpl @Inject constructor(
-    private val context: Context,
+    @Named("ApplicationContext")private val context: Context
 //    private val colorState: MutableStateFlow(null)
-) : ViewModel() {
+) : ViewModel ()   {
 
     lateinit var viewModelProducer:ViewModelProducer
     lateinit var newColor: Color
-init{
-    val clr = DaggerViewModelProducerComponent.factory().create(context).sendColor()
-}
-//    private val viewModelProducer = ViewModelProducer()
 
     fun observeColors() {
         if (context !is Application) throw RuntimeException("Здесь нужен контекст апликейшена")
@@ -33,21 +32,30 @@ init{
     }
 }
 
-@Component(modules = [ApplicationComponent::class] )
-interface ViewModelReceiverComponent {
+class ViewModelReceiverFactory @Inject constructor(
+    private val context: Context
+): ViewModelProvider.Factory{
+    override fun <T: ViewModel> create(modelClass: Class<T>): T{
+        return ViewModelReceiverImpl(context) as T
+    }
+}
+
+
+@Component(dependencies = [ApplicationComponent::class],
+    modules = [ViewModelReceiverModule::class]
+    )
+interface ViewModelReceiver {
+
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context,
-                  ): ViewModelReceiverComponent
+        fun create(@BindsInstance context: Context ): ViewModelReceiver
     }
     fun inject(fragmentReceiver:FragmentReceiver)
 }
 
-//@Module
-//interface ViewModelReceiver{
-//    @Binds
-//    fun bindViewModelReceiver() : ViewModelReceiver{
-//        return ViewModelReceiverImpl( )
-//    }
+@Module
+interface ViewModelReceiverModule{
+    @Binds
+    fun bindViewModelReceiver(viewModelReceiver:ViewModelReceiver) : ViewModelReceiver
 
-//}
+}
