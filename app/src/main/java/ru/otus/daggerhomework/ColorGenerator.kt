@@ -1,28 +1,35 @@
 package ru.otus.daggerhomework
 
 import android.graphics.Color
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.util.*
 import javax.inject.Inject
 
-interface ColorGenerator  {
-
-    fun generateColor()
-    @ColorInt
-    fun getColor(): Int
+interface ColorGenerator {
+    fun generateColor(): Int
+    suspend fun getColor(): Flow<Int>
 }
 
-class  ColorGeneratorImpl @Inject constructor(): ColorGenerator  {
-    private var _colorState = MutableStateFlow(Color.BLUE)
-    val colorState:StateFlow<Int>  = _colorState
+class ColorGeneratorImpl @Inject constructor() : ColorGenerator {
+//    private var _colorState = MutableStateFlow<Int>(Color.BLUE)
 
-     override fun generateColor() {
-        val rnd = Random()
-        _colorState.value = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+    var color: Int = -11332255
+    private val rnd = Random()
+
+    override fun generateColor(): Int {
+//        _colorState.value = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+
+        color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+        System.out.println("ColorGenerator generateColor $color  ")
+        return color
     }
 
-    override fun getColor() = colorState.value
+    override suspend fun getColor(): Flow<Int> {
+//        val colorState = _colorState.asStateFlow()
+
+//        return flowOf(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256)))
+        System.out.println("ColorGenerator colorState getColor $color")
+        return flowOf(color)
+    }
 }
