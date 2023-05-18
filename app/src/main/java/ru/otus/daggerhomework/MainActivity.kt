@@ -29,9 +29,8 @@ interface MainActivityComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance @ActivityContext context: Context): MainActivityComponent
+        fun create(@BindsInstance  context: Context): MainActivityComponent
     }
 }
 
-annotation class ActivityContext
 

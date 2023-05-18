@@ -10,15 +10,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
+import javax.inject.Named
 
 class ViewModelReceiverImpl @Inject constructor(
     private val context: Context,
     private val colorGenerator: ColorGenerator
 ) : ViewModel() {
-
+    var showToast = true
     suspend fun observeColors(): StateFlow<Int> {
         if (context !is Application) throw RuntimeException("Здесь нужен контекст апликейшена")
-        Toast.makeText(context, "Color received", Toast.LENGTH_LONG).show()
+         if(showToast){
+             Toast.makeText(context, "Color received", Toast.LENGTH_SHORT).show()
+            showToast = false}
         return colorGenerator.getColor().stateIn(CoroutineScope(Dispatchers.IO))
     }
 }
@@ -40,7 +43,7 @@ interface ViewModelReceiverComponent {
     @Component.Factory
     interface Factory {
         fun create(
-            @BindsInstance @ApplicationContext context: Context,
+            @BindsInstance   context: Context,
         ): ViewModelReceiverComponent
     }
 
