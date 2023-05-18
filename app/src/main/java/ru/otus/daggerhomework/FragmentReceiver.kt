@@ -14,6 +14,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 class FragmentReceiver : Fragment() {
     @Inject
     lateinit var viewModelReceiver: ViewModelReceiverImpl
@@ -24,7 +25,6 @@ class FragmentReceiver : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         DaggerViewModelReceiverComponent
             .factory()
             .create(this.requireActivity().application)
@@ -35,17 +35,17 @@ class FragmentReceiver : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         frameLayout = view.findViewById(R.id.frame)
-        frameLayout.setBackgroundColor(viewModelReceiver.newColor.value)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 while (true) {
-                    delay(5000)
-                launch {
+                    delay(50)
+                    launch {
                         viewModelReceiver.observeColors().collect {
                             populateColor(it)
                         }
                     }
                 }
+
             }
         }
     }

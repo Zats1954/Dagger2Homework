@@ -11,8 +11,8 @@ class ViewModelProducer @Inject constructor(
     private val colorGenerator: ColorGenerator,
     private val context: Context
 ) : ViewModel() {
+
     fun changeColor() {
-//        System.out.println("context is MainActivity ${context is MainActivity}")
         if (context !is MainActivity) throw RuntimeException("Здесь нужен контекст активити")
         colorGenerator.generateColor()
         Toast.makeText(context, "Color sent", Toast.LENGTH_LONG).show()
@@ -21,7 +21,6 @@ class ViewModelProducer @Inject constructor(
 
 @Component(
     modules = [ColorGeneratorModule::class],
-//         dependencies = [MainActivityComponent::class]
 )
 interface ViewModelProducerComponent {
     @Component.Factory
