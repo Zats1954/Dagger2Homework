@@ -11,7 +11,7 @@ import javax.inject.Inject
 class FragmentProducer : Fragment() {
 
     @Inject
-    lateinit var viewModelProducer: ViewModelProducer
+    lateinit var viewModelProducer: ViewModelProducerImpl
 
 
     override fun onCreateView(

@@ -4,11 +4,12 @@ import android.app.Application
 import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import dagger.*
 import javax.inject.Inject
 
 
-class ViewModelProducer @Inject constructor(
+class ViewModelProducerImpl @Inject constructor(
     private val colorGenerator: ColorGenerator,
     private val context: Context
 ) : ViewModel() {
@@ -20,13 +21,24 @@ class ViewModelProducer @Inject constructor(
     }
 }
 
+class ViewModelProducerFactory @Inject constructor(
+    private val colorGenerator: ColorGenerator,
+    private val context: Context
+) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return ViewModelProducerImpl(colorGenerator, context ) as T
+    }
+}
+
 @Component(
-    modules = [ColorGeneratorModule::class],
+    modules = [ViewProducerModule::class,ColorGeneratorModule::class],
 )
 interface ViewModelProducerComponent {
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance  context: Context): ViewModelProducerComponent
+        fun create(
+            @BindsInstance  context: Context,
+        ): ViewModelProducerComponent
     }
 
     fun inject(fragmentProducer: FragmentProducer)
@@ -36,4 +48,10 @@ interface ViewModelProducerComponent {
 interface ColorGeneratorModule {
     @Binds
     fun bindColorGenerator(colorGenerator: ColorGeneratorImpl): ColorGenerator
+}
+
+@Module
+interface ViewProducerModule {
+    @Binds
+    fun bindFactory(viewModelProducerFactory: ViewModelProducerFactory): ViewModelProvider.Factory
 }
