@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 
 class ViewModelProducerImpl @Inject constructor(
-    private val colorGenerator: ColorGenerator,
-    private val context: Context
+    private val context: Context,
+    private val colorGenerator: ColorGenerator
 ) : ViewModel() {
 
     fun changeColor() {
@@ -22,36 +22,12 @@ class ViewModelProducerImpl @Inject constructor(
 }
 
 class ViewModelProducerFactory @Inject constructor(
-    private val colorGenerator: ColorGenerator,
-    private val context: Context
+    private val context: Context,
+    private val colorGenerator: ColorGenerator
 ) : ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return ViewModelProducerImpl(colorGenerator, context ) as T
+        return ViewModelProducerImpl( context, colorGenerator  ) as T
     }
 }
 
-@Component(
-    modules = [ViewProducerModule::class,ColorGeneratorModule::class],
-)
-interface ViewModelProducerComponent {
-    @Component.Factory
-    interface Factory {
-        fun create(
-            @BindsInstance  context: Context,
-        ): ViewModelProducerComponent
-    }
-
-    fun inject(fragmentProducer: FragmentProducer)
-}
-
-@Module
-interface ColorGeneratorModule {
-    @Binds
-    fun bindColorGenerator(colorGenerator: ColorGeneratorImpl): ColorGenerator
-}
-
-@Module
-interface ViewProducerModule {
-    @Binds
-    fun bindFactory(viewModelProducerFactory: ViewModelProducerFactory): ViewModelProvider.Factory
-}

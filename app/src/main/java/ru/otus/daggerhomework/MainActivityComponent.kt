@@ -5,11 +5,12 @@ import dagger.BindsInstance
 import dagger.Component
 
 @Component
-interface ApplicationComponent {
+interface MainActivityComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context): ApplicationComponent
+        fun create(@BindsInstance context: Context): MainActivityComponent
     }
 }
 
+annotation class MainActivityContext

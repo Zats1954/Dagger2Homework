@@ -9,10 +9,8 @@ import androidx.fragment.app.Fragment
 import javax.inject.Inject
 
 class FragmentProducer : Fragment() {
-
     @Inject
     lateinit var viewModelProducer: ViewModelProducerImpl
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,13 +21,13 @@ class FragmentProducer : Fragment() {
             .factory()
             .create(requireActivity() as MainActivity)
             .inject(this)
-          return inflater.inflate(R.layout.fragment_a, container, true)
+        return inflater.inflate(R.layout.fragment_a, container, true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.button).setOnClickListener {
-                        viewModelProducer.changeColor()
+            viewModelProducer.changeColor()
         }
     }
 }

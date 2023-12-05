@@ -20,6 +20,7 @@ class FragmentReceiver : Fragment() {
     lateinit var viewModelReceiver: ViewModelReceiverImpl
     private lateinit var frameLayout: FrameLayout
     private var oldColor = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,7 +42,6 @@ class FragmentReceiver : Fragment() {
                     delay(50)
                     launch {
                         viewModelReceiver.observeColors().collect {
-//   StateFlow doesn’t have an observe method (https://www.kodeco.com/22030171-reactive-streams-on-kotlin-sharedflow-and-stateflow)
                             if (oldColor != it) {
                                 populateColor(it)
                                 oldColor = it

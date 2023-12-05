@@ -12,8 +12,10 @@ interface ColorGenerator {
 }
 
 class ColorGeneratorImpl @Inject constructor() : ColorGenerator {
-companion object{
-    var color: Int = -11332255}
+    companion object {
+        var color: Int = -11332255
+    }
+
     private val rnd = Random()
 
     override fun generateColor(): Int {
